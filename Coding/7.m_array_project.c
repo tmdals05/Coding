@@ -156,7 +156,7 @@ int conv_pos_y(int y)
 
 void printAnimals() // 동물 위치 출력
 {
-	printf("\n=======이건 비밀인데 몰래보여줍니다==========\n\n");
+	printf("\n===================정답======================\n\n");
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 5; j++)
