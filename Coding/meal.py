@@ -9,7 +9,7 @@ import schedule
 
 application = Flask(__name__)
 
-days = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)']
+Days = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)']
 
 def meal_function(SCHOOL_CODE, MEAL, PLUS_DATE):
     API_KEY = '02d070cf271a46259611f05b0b03e9e6'
@@ -46,17 +46,17 @@ def meal_function(SCHOOL_CODE, MEAL, PLUS_DATE):
         meal_3 = "불러올 데이터가 없습니다"
 
 
-    if PLUS_DATE == '0':
+    if int(PLUS_DATE) == 0:
         meal_date = datetime.today()
         meal_date = meal_date.strftime("%Y-%m-%d")
         day_of_week = datetime.today().weekday()
-        meal_final = (meal_date + days[day_of_week] + " 중식 메뉴\n\n" + meal_3)
+        meal_final = (meal_date + Days[day_of_week] + " 중식 메뉴\n\n" + meal_3)
 
-    elif PLUS_DATE == '1':
+    elif int(PLUS_DATE) == 1:
         meal_date = datetime.today() + timedelta(1)
         meal_date = meal_date.strftime("%Y-%m-%d")
         day_of_week = datetime.today().weekday()
-        meal_final = (meal_date + days[day_of_week + 1] + " 석식 메뉴\n\n" + meal_3)
+        meal_final = (meal_date + Days[day_of_week + 1] + " 석식 메뉴\n\n" + meal_3)
     
     return meal_final
 
