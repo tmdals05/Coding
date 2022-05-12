@@ -39,24 +39,41 @@ def meal_function(SCHOOL_CODE, MEAL, PLUS_DATE):
         for i in range(len(body)):
             meal_1 = body[i]['DDISH_NM']
         
-        meal_2 = meal_1.replace('<br/>', '\n\n')
+        meal_1 = meal_1.replace('<br/>', '\n')
 
-        meal_3 = re.sub(r'\([^)]*\)', '', meal_2)
+        meal_1 = re.sub(r'\([^)]*\)', '', meal_1)
     except:
-        meal_3 = "불러올 데이터가 없습니다"
+        meal_1 = "불러올 데이터가 없습니다"
 
+    if int(MEAL) == 2:
+        MEAL_MENU = ' 중식 메뉴'
+    elif int(MEAL) == 3:
+        MEAL_MENU = ' 석식 메뉴'
 
+    try:
+        body = json_ob['mealServiceDietInfo'][1]['row']
+        for i in range(len(body)):
+            meal_2 = body[i]['CAL_INFO']
+    except:
+        meal_1 = "불러올 데이터가 없습니다"
+    
     if int(PLUS_DATE) == 0:
         meal_date = datetime.today()
         meal_date = meal_date.strftime("%Y-%m-%d")
-        day_of_week = datetime.today().weekday()
-        meal_final = (meal_date + Days[day_of_week] + " 중식 메뉴\n\n" + meal_3)
-
+        day_of_week = datetime.today().weekday() % 7
+        try:
+            meal_final = (meal_date + Days[day_of_week] + MEAL_MENU + "\n\n" + meal_1 + "\n\n(" + meal_2 + ")")
+        except:
+            meal_final = "불러올 데이터가 없습니다"
+            
     elif int(PLUS_DATE) == 1:
         meal_date = datetime.today() + timedelta(1)
         meal_date = meal_date.strftime("%Y-%m-%d")
-        day_of_week = datetime.today().weekday()
-        meal_final = (meal_date + Days[day_of_week + 1] + " 석식 메뉴\n\n" + meal_3)
+        day_of_week = datetime.today().weekday() % 7
+        try:
+            meal_final = (meal_date + Days[day_of_week + 1] + MEAL_MENU + "\n\n" + meal_1 + "\n\n(" + meal_2 + ")")
+        except:
+            meal_final = "불러올 데이터가 없습니다"
     
     return meal_final
 
