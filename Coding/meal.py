@@ -60,18 +60,18 @@ def meal_function(SCHOOL_CODE, MEAL, PLUS_DATE):
     if int(PLUS_DATE) == 0:
         meal_date = datetime.today()
         meal_date = meal_date.strftime("%Y-%m-%d")
-        day_of_week = datetime.today().weekday() % 7
+        day_of_week = datetime.today().weekday()
         try:
-            meal_final = (meal_date + Days[day_of_week] + MEAL_MENU + "\n\n" + meal_1 + "\n\n(" + meal_2 + ")")
+            meal_final = (meal_date + Days[day_of_week % 7] + MEAL_MENU + "\n\n" + meal_1 + "\n\n(" + meal_2 + ")")
         except:
             meal_final = "불러올 데이터가 없습니다"
             
     elif int(PLUS_DATE) == 1:
         meal_date = datetime.today() + timedelta(1)
         meal_date = meal_date.strftime("%Y-%m-%d")
-        day_of_week = datetime.today().weekday() % 7
+        day_of_week = datetime.today().weekday()
         try:
-            meal_final = (meal_date + Days[day_of_week + 1] + MEAL_MENU + "\n\n" + meal_1 + "\n\n(" + meal_2 + ")")
+            meal_final = (meal_date + Days[(day_of_week + 1) % 7] + MEAL_MENU + "\n\n" + meal_1 + "\n\n(" + meal_2 + ")")
         except:
             meal_final = "불러올 데이터가 없습니다"
     
