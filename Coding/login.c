@@ -3,10 +3,12 @@
 #include <Windows.h>
 #pragma warning(disable: 4996)
 
+void CursorView(char tf);
 int menu();
-void SingUp();
-void SingIn();
+void SignUp();
+void SignIn();
 void findPW();
+int ID_OverlapCheck(char ID[50]);
 
 struct person
 {
@@ -18,18 +20,19 @@ int count = 0;
 
 int main()
 {
+	system("title 회원가입 로그인");
 	while (1)
 	{
 		int choose = menu();
-		if (choose == 1)
+		if (choose == 49)
 		{
-			SingUp();
+			SignUp();
 		}
-		else if (choose == 2)
+		else if (choose == 50)
 		{
-			SingIn();
+			SignIn();
 		}
-		else if (choose == 3)
+		else if (choose == 51)
 		{
 			findPW();
 		}
@@ -39,26 +42,42 @@ int main()
 
 int menu()
 {
+	CursorView(FALSE);
 	system("cls");
 	int choose;
 	printf("%s\n", "1) 회원가입");
 	printf("%s\n", "2) 로그인");
 	printf("%s\n", "3) 비밀번호 찾기");
-	scanf("%d", &choose);
+	choose = _getch();
+	CursorView(TRUE);
 	return choose;
 }
 
-void SingUp()
+void SignUp()
 {
+	char tempID[50];
+	char tempPW[50];
 	system("cls");
 	printf("%s", "아이디를 입력하세요 : ");
-	scanf("%s", num[count].ID);
+	scanf("%s", tempID);
 	printf("%s", "비밀번호를 입력하세요 : ");
-	scanf("%s", num[count].PW);
+	scanf("%s", tempPW);
+	ID_OverlapCheck(tempID);
+	strcpy(num[count].ID, tempID);
+	strcpy(num[count].PW, tempPW);
+	printf("회원가입이 되었습니다!\n");
+	printf("%s", "메뉴로 돌아가려면 아무키나 누르세요..");
+	while (1)
+	{
+		if (_kbhit())
+		{
+			break;
+		}
+	}
 	count++;
 }
 
-void SingIn()
+void SignIn()
 {
 	system("cls");
 	char ID[50];
@@ -69,15 +88,30 @@ void SingIn()
 	scanf("%s", PW);
 	for (int i = 0; i <= count; i++)
 	{
-		if (strcmp(ID, num[i].ID) == 0 && strcmp(PW, num[i].PW == 0))
+		if (strcmp(ID, num[i].ID) == 0 && strcmp(PW, num[i].PW) == 0)
 		{
-			printf("로그인이 되었습니다");
-			Sleep(3000);
+			printf("로그인이 되었습니다\n");
+			printf("%s", "메뉴로 돌아가려면 아무키나 누르세요..");
+			while (1)
+			{
+				if (_kbhit())
+				{
+					return 0;
+				}
+			}
 		}
 		else
 		{
-			printf("아이디와 비밀번호를 다시한번 확인해주세요");
-			Sleep(3000);
+			printf("아이디와 비밀번호를 다시한번 확인해주세요\n");
+			printf("%s", "메뉴로 돌아가려면 아무키나 누르세요..");
+			while (1)
+			{
+				if (_kbhit())
+				{
+					break;
+				}
+			}
+			break;
 		}
 	}
 }
@@ -92,11 +126,52 @@ void findPW()
 	{
 		if (strcmp(ID, num[i].ID) == 0)
 		{
-			printf("찾으신 비밀번호는 %s입니다", num[i].PW);
-			Sleep(3000);
+			printf("찾으신 비밀번호는 %s입니다\n", num[i].PW);
+			printf("%s", "메뉴로 돌아가려면 아무키나 누르세요..");
+			while (1)
+			{
+				if (_kbhit())
+				{
+					break;
+				}
+			}
+		}
+		printf("아이디가 존재하지 않습니다\n");
+		printf("%s", "메뉴로 돌아가려면 아무키나 누르세요..");
+		while (1)
+		{
+			if (_kbhit())
+			{
+				break;
+			}
+		}
+	}
+}
+
+int ID_OverlapCheck(char ID[50])
+{
+	for (int i = 0; i <= count; i++)
+	{
+		if (strcmp(ID, num[i].ID) == 0)
+		{
+			printf("중복된 아이디가 있습니다\n");
+			printf("%s", "메뉴로 돌아가려면 아무키나 누르세요..");
+			while (1)
+			{
+				if (_kbhit())
+				{
+					break;
+				}
+			}
 			break;
 		}
-		printf("아이디가 존재하지 않습니다");
-		Sleep(3000);
 	}
+}
+
+void CursorView(char tf)
+{
+	CONSOLE_CURSOR_INFO cursorInfo = { 0, };
+	cursorInfo.dwSize = 1;
+	cursorInfo.bVisible = tf;
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 }
