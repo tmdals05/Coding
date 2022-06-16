@@ -18,7 +18,7 @@ void book_borrow(char student_name[MAX], int book_num, char book_name[MAX]); // 
 void book_return(int num, char student_name[MAX]); // 책 반납하기 함수
 void WaitKeyInput(); // 키보드 입력대기 함수
 
-int main()
+int book_manage()
 {
 	for (int i = 0; i < 100; i++) // 모든 lib.state를 2로 초기화
 	{
