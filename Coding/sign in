@@ -1,31 +1,49 @@
 #include<stdio.h>
 #include<string.h>
-
+#define MAX 100
 #pragma warning(disable:4996)
+
+void login();
+
 char student[50][50];
 char book_name[50][50];
-void a()
+
+int main()
 {
-	char y[50];
-	printf("당신의 이름을 입력해주세요.: ");
-	scanf("%s", y);
-	int j = 0, g = 0, choice;
-	for (int i = 0; i < 50;i++)
+	int choice;
+	while (1)
 	{
-		if (strcmp(y, student[i]) == 0)
+		scanf("%d", &choice);
+		switch (choice)
 		{
-			printf("%s님이 현재 대출하고 계신 책은 %s입니다.", student[i], book_name[i]);
-			j = 1;
-			//if (lim[i].state == 1)
-			//{
-				//printf("%s님이 현재 대출하고 계신 책은 %s입니다.", student[i], book_name[i]);
-				//j = 1;
-			//}
-			//else
-			//{
-				//printf("%s님이 현재 대출하고 계신 책은 없습니다.", student[i]);
-				//j = 1;
-			//}
+		case 1:
+			login();
+		case 2:
+			book_manage();
+		}
+	}
+}
+
+void login()
+{
+	char name[MAX];
+	printf("당신의 이름을 입력해주세요.: ");
+	scanf("%s", name);
+	int j = 0, g = 0, choice;
+	for (int i = 0; i < MAX;i++)
+	{
+		if (strcmp(name, student[i]) == 0)
+		{
+			if (lib[i].state == 1)
+			{
+				printf("%s님이 현재 대출하고 계신 책은 %s입니다.", student[i], book_name[i]);
+				j = 1;
+			}
+			else
+			{
+				printf("%s님이 현재 대출하고 계신 책은 없습니다.", student[i]);
+				j = 1;
+			}
 		}
 	}
 	if (j == 0)
@@ -34,26 +52,12 @@ void a()
 		scanf("%d", &choice);
 		if (choice == 1)
 		{
-			strcpy(student[g], y);
+			strcpy(student[g], name);
 			g++;
 		}
 		else
 		{
 			printf("가입이 취소되었습니다.");
-		}
-	}
-}
-int main()
-{
-	int x;
-	while (1)
-	{
-		scanf("%d", &x);
-		switch (x)
-		{
-		case 1:
-			a();
-			break;
 		}
 	}
 }
