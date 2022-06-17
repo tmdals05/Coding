@@ -5,6 +5,16 @@
 #include <Windows.h>
 #define MAX 100
 //leokim0503@naver.com
+
+void login();
+void WaitKeyInput(); // 키보드 입력대기 함수
+void book_borrow(char student_name[MAX], int book_num, char book_name[MAX]); // 책 빌리기 함수
+void book_return(int num, char student_name[MAX]); // 책 반납하기 함수
+int book_manage();
+
+int login_turn = 0;
+char student[50][50];
+
 struct library
 {
 	int book_num; // 책 번호
@@ -14,9 +24,68 @@ struct library
 };
 struct library lib[MAX];
 
-void book_borrow(char student_name[MAX], int book_num, char book_name[MAX]); // 책 빌리기 함수
-void book_return(int num, char student_name[MAX]); // 책 반납하기 함수
-void WaitKeyInput(); // 키보드 입력대기 함수
+int main()
+{
+	while (1)
+	{
+		system("cls");
+		printf("1. 회원정보 관리\n");
+		printf("2. 책 빌리기/반납\n");
+		int choice;
+		scanf_s("%d", &choice);
+		switch (choice)
+		{
+		case 1:
+			login();
+			break;
+		case 2:
+			book_manage();
+			break;
+		}
+	}
+}
+
+void login()
+{
+	system("cls");
+	char name[MAX];
+	printf("당신의 이름을 입력해주세요 : ");
+	scanf_s("%s", name, (int)sizeof(name));
+	int IsRun[2] = {0}, choice;
+	for (int i = 0; i < MAX;i++)
+	{
+		if (strcmp(name, lib[i].student_name) == 0 && lib[i].state == 1)
+		{
+			printf("%s님이 현재 대출하고 계신 책은 %s입니다.\n", lib[i].student_name, lib[i].book_title);
+			IsRun[0]++;
+			IsRun[1]++;
+		}
+	}
+	for (int i = 0; i < MAX; i++)
+	{
+		if (IsRun[1] == 0 && strcmp(name, student[i]) == 0)
+		{
+			printf("%s님이 현재 대출하고 계신 책은 없습니다.", name);
+			IsRun[0]++;
+		}
+	}
+	if (IsRun[0] == 0)
+	{
+		printf("일치하는 이름이 없어 회원가입을 진행합니다. 동의하십니까?(동의시 1 입력) : ");
+		scanf_s("%d", &choice);
+		if (choice == 1)
+		{
+			strcpy(student[login_turn], name);
+			login_turn++;
+			printf("회원가입이 되었습니다");
+		}
+		else
+		{
+			printf("가입이 취소되었습니다.");
+		}
+	}
+	WaitKeyInput();
+}
 
 int book_manage()
 {
@@ -35,6 +104,20 @@ int book_manage()
 		scanf_s("%s", temp_student_name, (int)sizeof(temp_student_name));
 		if (temp_student_name[0] == '0') // 0입력시 나가기
 		{
+			return 0;
+		}
+		int turn = 0;
+		for (int i = 0; i < MAX; i++)
+		{
+			if (strcmp(student[i], temp_student_name) == 0)
+			{
+				turn++;
+			}
+		}
+		if (turn != 0)
+		{
+			printf("회원가입이 되어있지 않은 이름입니다");
+			WaitKeyInput();
 			return 0;
 		}
 		printf("대출/반납할 책 번호를 입력해주세요 : "); // 대출할 책 번호 입력
