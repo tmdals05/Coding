@@ -4,7 +4,7 @@
 #include <conio.h>
 #include <Windows.h>
 #define MAX 100
-
+//leokim0503@naver.com
 struct library
 {
 	int book_num; // 책 번호
