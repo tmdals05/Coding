@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 import json
 import re
 import schedule
+import datetime
 
 application = Flask(__name__)
 
@@ -153,33 +154,18 @@ def cheonan_lunch_today_function():
                     }
                 }
             ]
-        }
+        }   
     }
     return jsonify(response)
 
 @application.route("/meal/test", methods=["POST"])
 def meal_test():
     body = request.get_json()
-    print(body)
-    params_df = body['action']['detailParams']
-    print(type(params_df))
-    date_request = json.loads(params_df['date'])['origin']
-
-    print(date_request, type(date_request))
-    
-    response = {
-        "version": "2.0",
-        "template": {
-            "outputs": [
-                {
-                    "simpleText": {
-                        "text": (meal_function('8140104', '2', '0'))
-                    }
-                }
-            ]
-        }
-    }
-    return jsonify(response)
+    json_ob = body['action']['detailParams']['date']['origin']
+    json_ob = json_ob.replace('-', '')
+    print(json_ob)
+    print(type(json_ob))
+          
 
 
 if __name__ == "__main__":
