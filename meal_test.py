@@ -12,10 +12,12 @@ application = Flask(__name__)
 
 Days = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)']
 
-def meal_function(SCHOOL_CODE, MEAL, PLUS_DATE):
+def meal_function(SCHOOL_CODE, MEAL, PLUS_DATE, set_date):
     API_KEY = '02d070cf271a46259611f05b0b03e9e6'
     FAKE_DATE = '20220425'
     REAL_DATE = datetime.today().strftime('%Y%m%d')
+    if(set_date != 0):
+        REAL_DATE = set_date
 
     DATE = int(REAL_DATE) + int(PLUS_DATE)
 
@@ -86,7 +88,7 @@ def lunch_today_function():
             "outputs": [
                 {
                     "simpleText": {
-                        "text": (meal_function('8140387', '2', '0'))
+                        "text": (meal_function('8140387', '2', '0', '0'))
                     }
                 }
             ]
@@ -102,7 +104,7 @@ def dinner_today_function():
             "outputs": [
                 {
                     "simpleText": {
-                        "text": (meal_function('8140387', '3', '0'))
+                        "text": (meal_function('8140387', '3', '0', '0'))
                     }
                 }
             ]
@@ -118,7 +120,7 @@ def lunch_tomorrow_function():
             "outputs": [
                 {
                     "simpleText": {
-                        "text": (meal_function('8140387', '2', '1'))
+                        "text": (meal_function('8140387', '2', '1', '0'))
                     }
                 }
             ]
@@ -134,7 +136,7 @@ def dinner_tomorrow_function():
             "outputs": [
                 {
                     "simpleText": {
-                        "text": (meal_function('8140387', '3', '1'))
+                        "text": (meal_function('8140387', '3', '1', '0'))
                     }
                 }
             ]
@@ -150,7 +152,7 @@ def cheonan_lunch_today_function():
             "outputs": [
                 {
                     "simpleText": {
-                        "text": (meal_function('8140104', '2', '0'))
+                        "text": (meal_function('8140104', '2', '0', '0'))
                     }
                 }
             ]
@@ -163,8 +165,20 @@ def meal_test():
     body = request.get_json()
     json_ob = body['action']['detailParams']['date']['origin']
     json_ob = json_ob.replace('-', '')
-    print(json_ob)
-    print(type(json_ob))
+    response = {
+        "version": "2.0",
+        "template": {
+            "outputs": [
+                {
+                    "simpleText": {
+                        "text": (meal_function('8140104', '2', '0', json_ob))
+                    }
+                }
+            ]
+        }   
+    }
+    return jsonify(response)
+    
           
 
 
