@@ -161,9 +161,9 @@ def cheonan_lunch_today_function():
 def meal_test():
     body = request.get_json()
     print(body)
-    params_df = body['action']['params']
+    params_df = body['action']['detailParams']
     print(type(params_df))
-    date_request = json.loads(params_df['date'])['amount']
+    date_request = json.loads(params_df['date'])['origin']
 
     print(date_request, type(date_request))
     
