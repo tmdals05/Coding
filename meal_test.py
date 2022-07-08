@@ -1,6 +1,6 @@
 from urllib import response
 import requests
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import sys
 from datetime import datetime, timedelta
 import json
@@ -185,4 +185,4 @@ def meal_test():
 if __name__ == "__main__":
     application.run(host='0.0.0.0', port=int(sys.argv[1]), debug=True)
 
-schedule.every().day.at("01:00").do(meal_function)
+schedule.every().day.at("00:00").do(meal_function)
