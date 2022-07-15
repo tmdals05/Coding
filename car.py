@@ -1,21 +1,16 @@
 import modi
 import time
-from multiprocessing import Process
 
 bundle = modi.MODI()
 
 motor_1 = bundle.motors[0] #모터
 motor_2 = bundle.motors[1]
-motor_3 = bundle.motors[2]
 speaker = bundle.speakers[0] #스피커
 dial_1 = bundle.dials[0] #다이얼
 dial_2 = bundle.dials[1]
 button = bundle.buttons[0] #버튼
 ir_1 = bundle.irs[0] #IR센서
 ir_2 = bundle.irs[1] 
-ir_3 = bundle.irs[2]
-ir_4 = bundle.irs[3]
-led = bundle.leds[0] #led
 
 def car():
     while True:
@@ -46,22 +41,4 @@ def car():
                 motor_1.speed = 0, 0
                 motor_2.speed = 0, 0
 
-def gate():
-    while True:
-        led.rgb = 100, 0, 0
-        motor_3.degree = 1, 0
-        count = 0
-        while ir_3.proximity > 50 and count < 3:
-            time.sleep(1)
-            count += 1
-        if count == 3:
-            motor_3.degree = 29, 0
-            led.rgb = 0, 100, 0
-            while True:
-                if ir_4.proximity != 0:
-                    break
-
-p_car = Process(target=car)
-p_gate = Process(target=gate)
-p_car.start()
-p_gate.start()
+car()
