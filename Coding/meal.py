@@ -1,6 +1,6 @@
 from urllib import response
 import requests
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import sys
 from datetime import datetime, timedelta
 import json
@@ -66,12 +66,13 @@ def meal_function(SCHOOL_CODE, MEAL, PLUS_DATE):
         except:
             meal_final = "불러올 데이터가 없습니다"
             
-    elif int(PLUS_DATE) == 1:
-        meal_date = datetime.today() + timedelta(1)
-        meal_date = meal_date.strftime("%Y-%m-%d")
+    elif int(PLUS_DATE) != 0:
+        now = datetime.today()
+        after_day = now + timedelta(days = int(PLUS_DATE))
+        meal_date = after_day.strftime("%Y-%m-%d")
         day_of_week = datetime.today().weekday()
         try:
-            meal_final = (meal_date + Days[(day_of_week + 1) % 7] + MEAL_MENU + "\n\n" + meal_1 + "\n\n(" + meal_2 + ")")
+            meal_final = (meal_date + Days[(day_of_week + int(PLUS_DATE)) % 7] + MEAL_MENU + "\n\n" + meal_1 + "\n\n(" + meal_2 + ")")
         except:
             meal_final = "불러올 데이터가 없습니다"
     
@@ -141,6 +142,42 @@ def dinner_tomorrow_function():
     }
     return jsonify(response)
 
+@application.route("/meal/test", methods=["POST"])
+def meal_test():
+    body = request.get_json()
+    json_ob = body['action']['detailParams']['date']['origin']
+    json_ob = json_ob.replace('-', '')
+    today = datetime.today().strftime('%Y%m%d')
+    # print(json_ob)
+    # print(type(json_ob))
+    # print(today)
+    # print(type(json_ob))
+    plus_date = int(json_ob) - int(today)
+    # print(plus_date)
+    # print(type(plus_date))
+    body = request.get_json()
+    json_ob = body['action']['detailParams']['type']['origin']
+    if json_ob == "중식":
+        meal_type = 2
+    if json_ob == "석식":
+        meal_type = 3
+    print(meal_type)
+
+    response = {
+        "version": "2.0",
+        "template": {
+            "outputs": [
+                {
+                    "simpleText": {
+                        "text": (meal_function('8140387', str(meal_type), int(plus_date)))
+                    }
+                }
+            ]
+        }   
+    }
+    return jsonify(response)
+    
+          
 @application.route("/lunch/cheonan", methods=["POST"])
 def cheonan_lunch_today_function():
     response = {
@@ -149,11 +186,11 @@ def cheonan_lunch_today_function():
             "outputs": [
                 {
                     "simpleText": {
-                        "text": (meal_function('8140104', '2', '0'))
+                        "text": (meal_function('8140104', '2', '0', '0'))
                     }
                 }
             ]
-        }
+        }   
     }
     return jsonify(response)
 
@@ -161,4 +198,4 @@ def cheonan_lunch_today_function():
 if __name__ == "__main__":
     application.run(host='0.0.0.0', port=int(sys.argv[1]), debug=True)
 
-schedule.every().day.at("01:00").do(meal_function)
+schedule.every().day.at("00:00").do(meal_function)
