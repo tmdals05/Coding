@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from urllib import response
 import requests
 from flask import Flask, jsonify, request
@@ -161,8 +163,6 @@ def meal_test():
         meal_type = 2
     if json_ob == "석식":
         meal_type = 3
-    print(meal_type)
-
     response = {
         "version": "2.0",
         "template": {
