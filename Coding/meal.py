@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from urllib import response
 import requests
 from flask import Flask, jsonify, request
 import sys
