@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-
+ # -*- coding: utf-8 -*-
 import requests
 from flask import Flask, jsonify, request
 import sys
@@ -185,7 +184,7 @@ def cheonan_lunch_today_function():
             "outputs": [
                 {
                     "simpleText": {
-                        "text": (meal_function('8140104', '2', '0', '0'))
+                        "text": (meal_function('8140104', '2', '0'))
                     }
                 }
             ]
